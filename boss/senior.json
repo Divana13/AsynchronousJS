@@ -1,0 +1,8 @@
+[
+  { "mission": "make your own weapon", "reward": "100 craft epx" },
+  { "mission": "enhance your own weapon", "reward": "200 craft epx" },
+  {
+    "mission": "upgrade your own weapon",
+    "reward": "200 craft epx and a random special stat"
+  }
+]
