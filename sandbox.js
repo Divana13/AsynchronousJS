@@ -1,25 +1,30 @@
-const getTodos = (resource, callback) => {
-  const request = new XMLHttpRequest();
+const getTodos = (resource) => {
+  return new Promise((resolve, reject) =>{
 
-  request.addEventListener("readystatechange", () => {
-    if (request.readyState === 4 && request.status === 200) {
-      const data = JSON.parse(request.responseText);
-      callback(undefined, data);
-    } else if (request.readyState === 4) {
-      callback("could not fetch data", undefined);
-    }
+    const request = new XMLHttpRequest();
+
+    request.addEventListener("readystatechange", () => {
+      if (request.readyState === 4 && request.status === 200) {
+        const data = JSON.parse(request.responseText);
+        resolve(data);
+      } else if (request.readyState === 4) {
+        reject('error getting resource');
+      }
+    });
+
+    request.open("GET", resource);
+    request.send();
   });
-
-  request.open("GET", resource);
-  request.send();
 };
 
-getTodos("boss/rockie.json", (err, data) => {
-  const red = document.getElementById("result");
-  if (err) {
-    console.log(err);
-  }
-  if (data) {
-    red.innerText = data;
-  }
+getTodos('boss/rockie.json').then(data =>{
+  console.log('rockie mission', data);
+  return getTodos('boss/junior.json');
+}).then(data =>{
+  console.log('Junior mission:', data);
+  return getTodos('boss/senior.json');
+}).then(data =>{
+  console.log('senior mission:', data);
+}).catch(err =>{
+  console.log(err);
 });
